@@ -9,8 +9,8 @@ final class ProdukInitial extends ProdukState {
 
 // ignore: must_be_immutable
 final class ProdukData extends ProdukState {
-  List<Produk> listProduks = [];
-  ProdukData(listProduk) : super();
+  List<Produk> listProduks ;
+  ProdukData(this.listProduks) : super();
 }
 
 final class ProdukLoading extends ProdukState {

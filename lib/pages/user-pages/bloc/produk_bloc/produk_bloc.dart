@@ -16,11 +16,12 @@ class ProdukBloc extends Bloc<ProdukEvent, ProdukState> {
     emit(ProdukLoading()); // Emit state loading
     try {
       print("Mengambil data produk");
-      var value = await ApiProduk().fetchAll(); // Tunggu hasil pemanggilan API
+      List<Produk> value = await ApiProduk().fetchAll(); 
+      print("isi : ${value.length}");// Tunggu hasil pemanggilan API
       emit(ProdukData(value)); // Emit state berhasil dengan data
     } catch (error) {
       print('error : $error');
-      emit(ProdukData(error.toString())); // Emit state error dengan pesan error
+      emit(ProdukData([])); // Emit state error dengan pesan error
     }
   }
 }

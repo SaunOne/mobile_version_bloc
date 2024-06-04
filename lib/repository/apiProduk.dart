@@ -58,7 +58,7 @@ class ApiProduk {
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
       
-      // print('isinya : ${response.body}');
+      print('isinya : ${response.body}');
       Iterable list = json.decode(response.body)['data'];
       print('data : ${list.map((e) => Produk.fromJson(e)).toList()}');
       return list.map((e) => Produk.fromJson(e)).toList();

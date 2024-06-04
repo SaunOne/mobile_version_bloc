@@ -98,4 +98,20 @@ class ApiTransaksi {
       return Future.error(e.toString());
     }
   }
+
+  Future<http.Response> konfirmasi(int id) async {
+    token = await getToken();
+    
+    try {
+      print("id = $id");
+      var response = await http.post(
+        Uri.http(url, '/api/konfirmasi-customer/$id'),
+        headers: _setHeaders(),
+      );
+      print("response ${response}");
+      return response;
+    } catch (e) {
+      return Future.error(e.toString());  
+    }
+  }
 }

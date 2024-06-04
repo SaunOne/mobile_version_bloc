@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class ReadyStok {
   int id;
-  int jumlah_stok;
+  double jumlah_stok;
   String satuan;
 
   ReadyStok(
@@ -13,7 +13,7 @@ class ReadyStok {
   factory ReadyStok.fromJson(Map<String, dynamic> json) {
     return ReadyStok(
       id: json['id_produk'] ?? 0,
-      jumlah_stok: json['jumlah_stok'] ?? 0,
+      jumlah_stok: (json['jumlah_stok'] ?? 0).toDouble(),
       satuan: json['satuan'] ?? '',
     );
   }

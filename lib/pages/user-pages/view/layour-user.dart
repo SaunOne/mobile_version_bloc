@@ -4,6 +4,7 @@ import 'package:mobile_version_bloc/pages/user-pages/view/content/home.dart';
 import 'package:mobile_version_bloc/utility/appColor.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LayoutUser extends StatefulWidget {
   const LayoutUser({super.key});
@@ -41,7 +42,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
       length: 2,
       vsync: this,
     );
-    activeContent = Container();
+    activeContent = Home();
   }
 
   @override
@@ -210,7 +211,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                   children: [
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/profile');
+                        Navigator.pushNamed(context, '/user/profile');
                       },
                       padding: EdgeInsets.zero,
                       child: Row(
@@ -235,7 +236,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/history');
+                        Navigator.pushNamed(context, '/user/history');
                       },
                       padding: EdgeInsets.zero,
                       child: Row(

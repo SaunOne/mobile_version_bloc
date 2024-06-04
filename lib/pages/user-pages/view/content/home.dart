@@ -30,17 +30,12 @@ class _HomeState extends State<Home> {
     produkBloc.add(LoadDataEvent());
   }
 
-  void handleLoading(bool isLoading) {
-    setState(() {
-      this.isLoading = isLoading;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final produkBloc = context.read<ProdukBloc>();
     final loginBloc = context.read<LoginBloc>();
-    return Stack(
+    return Stack( 
       children: [
         Container(
           margin: EdgeInsets.only(
@@ -139,6 +134,7 @@ class _HomeState extends State<Home> {
                       ),
                       child: BlocBuilder<LoginBloc, LoginState>(
                         builder: (context, state) {
+                          
                           if (state is LoginLoading) {
                             return Center(child: CircularProgressIndicator());
                           } else if (state is LoginSuccess) {
@@ -242,9 +238,11 @@ class _HomeState extends State<Home> {
                     ),
                     BlocBuilder<ProdukBloc, ProdukState>(
                       builder: (context, state) {
+                        print(state is ProdukLoading);
                         if (state is ProdukLoading) {
                           return Center(child: CircularProgressIndicator());
                         } else if (state is ProdukData) {
+                          print("list produk ${state.listProduks.length}");
                           listProduk = state.listProduks;
                           return CarouselSlider(
                             options: CarouselOptions(
