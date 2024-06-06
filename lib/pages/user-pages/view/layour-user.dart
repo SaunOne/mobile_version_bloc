@@ -80,7 +80,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-            if (isSideMenu) Positioned(top: 100, right: 20, child: sideBar())
+            if (isSideMenu) Positioned(top: 100, right: 20, child: sideBar(context))
           ],
         ),
       ),
@@ -148,7 +148,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
     );
   }
 
-  Widget sideBar() {
+  Widget sideBar(BuildContext context) {
     return Container(
       height: 400,
       width: 280,
@@ -211,7 +211,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                   children: [
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/user/profile');
+                        Navigator.pushNamed(context, '/profile');
                       },
                       padding: EdgeInsets.zero,
                       child: Row(
