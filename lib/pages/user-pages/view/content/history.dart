@@ -393,7 +393,7 @@ class _HistoryState extends State<History> {
           SizedBox(width: 10),
           _buildNavItem("sudah di-pickup", 3, historyBloc),
           SizedBox(width: 10),
-          _buildNavItem("sedang dikirim kurir", 4, historyBloc),
+          _buildNavItem("dikirim kurir", 4, historyBloc),
           SizedBox(width: 10),
           _buildNavItem("selesai", 5, historyBloc),
           SizedBox(width: 10),

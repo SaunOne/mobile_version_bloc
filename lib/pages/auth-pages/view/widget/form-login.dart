@@ -2,6 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_version_bloc/pages/auth-pages/bloc/login_bloc/login_bloc.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class FormLogin extends StatefulWidget {
   const FormLogin({super.key});
@@ -64,6 +65,8 @@ class _FormLoginState extends State<FormLogin> {
                 .show(
               context,
             );
+            print('state : ${state.user.id}');
+            OneSignal.login(state.user.id.toString());
             Navigator.pushNamed(context, '/user');
           }
         } else if(state is LoginFailed){

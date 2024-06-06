@@ -4,7 +4,7 @@ import 'package:mobile_version_bloc/models/user.dart';
 import 'package:mobile_version_bloc/utility/networkUrl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ApiUser {
+class ApiWallet {
   String token = '';
 
   static final String url = networkURL.prefix;
@@ -28,8 +28,9 @@ class ApiUser {
       var response = await http.get(Uri.http(url , '/api/wallet-user'),
           headers: _setHeaders());
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      print("wallet : ${response.body}");
-      return json.decode(response.body)['data'];
+      double wallet = (json.decode(response.body)['data']['jumlah_saldo']).toDouble();
+      print("wallet : ${wallet}");
+      return wallet;
     } catch (e) {
       return Future.error(e.toString());
     }

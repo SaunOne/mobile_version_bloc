@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version_bloc/api/apiUser.dart';
+import 'package:mobile_version_bloc/api/apiWallet.dart';
 import 'package:mobile_version_bloc/api/apiWithdraw.dart';
 import 'package:mobile_version_bloc/models/user.dart';
 import 'package:mobile_version_bloc/models/withdraw.dart';
@@ -16,6 +17,7 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   User? user;
   bool isLoading = false;
+  double saldo = 0;
   List<Withdraw> listWithdraw = [];
 
   void handleWallet() {
@@ -31,21 +33,34 @@ class _WalletState extends State<Wallet> {
       loading(false);
       print('Error fetching withdraws: $err');
     });
+
+    ApiWallet().findByAuth().then((value) {
+      print('Withdraws fetched successfully');
+      setState(() {
+        print("data saldo : ${value}");
+        saldo = value;
+      });
+      loading(false);
+    }).catchError((err) {
+      loading(false);
+      print('Error fetching wallet: $err');
+    });
   }
 
   void handlestoreWithDraw(int jumlah, String namaBank, String noRek) {
-  loading(true);
-  ApiWithdraw().storeWithDraw(jumlah, namaBank, noRek).then((value) {
-    print('Withdrawal initiation successful');
-    setState(() {
+    loading(true);
+    ApiWithdraw().storeWithDraw(jumlah, namaBank, noRek).then((value) {
+      print('Withdrawal initiation successful');
       handleWallet();
+      setState(() {
+        
+      });
+      loading(false);
+    }).catchError((err) {
+      loading(false);
+      print('Error initiating withdrawal: $err');
     });
-    loading(false);
-  }).catchError((err) {
-    loading(false);
-    print('Error initiating withdrawal: $err');
-  });
-}
+  }
 
   void loading(action) {
     setState(() {
@@ -98,7 +113,8 @@ class _WalletState extends State<Wallet> {
             ElevatedButton(
               child: Text('Submit'),
               onPressed: () {
-                handlestoreWithDraw(int.parse(amountController.text), accountNumberController.text, bankNameController.text);
+                handlestoreWithDraw(int.parse(amountController.text),
+                    accountNumberController.text, bankNameController.text);
                 // handle the withdraw submission here
                 Navigator.of(context).pop();
               },
@@ -182,17 +198,23 @@ class _WalletState extends State<Wallet> {
                             width: 30,
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Saldo: 0',
+                                '${saldo}',
                                 style: FontConstants.heading2(),
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   showWithdrawModal(context);
                                 },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppColors.primaryColor), // Warna collat
+                                ),
                                 child: Text('Withdraw'),
-                              ),
+                              )
                             ],
                           ),
                         ],
@@ -225,33 +247,42 @@ class _WalletState extends State<Wallet> {
                         style: FontConstants.heading2(),
                       ),
                       SizedBox(height: 10),
-                      isLoading? Center(child: CircularProgressIndicator(),) :
-                      Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: SingleChildScrollView(
-                            child: DataTable(
-                              columns: [
-                                DataColumn(label: Text('Id')),
-                                DataColumn(label: Text('Jumalh')),
-                                DataColumn(label: Text('Status')),
-                                DataColumn(label: Text('Tanggal')),
-                              ],
-                              rows: List<DataRow>.generate(
-                                listWithdraw.length,
-                                (index) => DataRow(
-                                  cells: [
-                                    DataCell(Text(listWithdraw[index].idWithdraw.toString())),
-                                    DataCell(Text(listWithdraw[index].jumlah.toString())),
-                                    DataCell(Text(listWithdraw[index].status)),
-                                    DataCell(Text(listWithdraw[index].tanggal)),
-                                  ],
+                      isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SingleChildScrollView(
+                                  child: DataTable(
+                                    columns: [
+                                      DataColumn(label: Text('Id')),
+                                      DataColumn(label: Text('Jumalh')),
+                                      DataColumn(label: Text('Status')),
+                                      DataColumn(label: Text('Tanggal')),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      listWithdraw.length,
+                                      (index) => DataRow(
+                                        cells: [
+                                          DataCell(Text(listWithdraw[index]
+                                              .idWithdraw
+                                              .toString())),
+                                          DataCell(Text(listWithdraw[index]
+                                              .jumlah
+                                              .toString())),
+                                          DataCell(
+                                              Text(listWithdraw[index].status)),
+                                          DataCell(Text(
+                                              listWithdraw[index].tanggal)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

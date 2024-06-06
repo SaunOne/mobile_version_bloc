@@ -40,7 +40,7 @@ class User {
     json = json["user"] ?? json;
    
     return User(
-      id : json["id"] ?? 0,
+      id : json["id_user"] ?? 0,
       username : json["username"] ?? '',
       password : json["password"] ?? '',
       nama_lengkap: json["nama_lengkap"] ?? '' ,
