@@ -99,7 +99,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
             }
         }
         emit(HistoryData(listTransaksi));
-        
       } catch (error) {
         print(error);
       }

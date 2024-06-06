@@ -31,6 +31,7 @@ class _FormLoginState extends State<FormLogin> {
                 .show(
               context,
             );
+            Navigator.pushNamed(context, '/mo');
             // Navigator.pushNamed(context, '/home-owner');
           } else if (state.role == 2) {
             AnimatedSnackBar.rectangle(
@@ -41,6 +42,7 @@ class _FormLoginState extends State<FormLogin> {
                 .show(
               context,
             );
+            Navigator.pushNamed(context, '/mo');
             // Navigator.pushNamed(context, '/home-mo');
           } else if (state.role == 3) {
             AnimatedSnackBar.rectangle(
@@ -51,6 +53,7 @@ class _FormLoginState extends State<FormLogin> {
                 .show(
               context,
             );
+            
             // Navigator.pushNamed(context, '/home-admin');
           } else if (state.role == 4) {
             AnimatedSnackBar.rectangle(

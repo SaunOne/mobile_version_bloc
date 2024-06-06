@@ -185,6 +185,7 @@ class _HistoryState extends State<History> {
           );
         } else if (state is HistoryData) {
           listAllTransaksi = state.listTransaksi;
+          
           listTransaksi = listAllTransaksi;
         } else if (state is ShowHistoryData) {
           listTransaksi = state.listTransaksi;
@@ -197,6 +198,7 @@ class _HistoryState extends State<History> {
             ),
             ...listTransaksi.map(
               (data) {
+                print("list detail pesanan : ${data.listDetailPesanan!.length}");
                 return Container(
                   margin: EdgeInsets.only(bottom: 20),
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -297,23 +299,25 @@ class _HistoryState extends State<History> {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Text(
+                                            data.listDetailPesanan!.length != 0?
                                             data.listDetailPesanan![0].produk
-                                                .nama_produk,
+                                                .nama_produk : "",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),
-                                          Text(data.listDetailPesanan![0].jumlah
-                                              .toString()),
+                                          Text(data.listDetailPesanan!.length != 0?
+                                            data.listDetailPesanan![0].jumlah.toString()
+                                                 : "",),
                                         ],
                                       ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Rp" +
-                                              data.listDetailPesanan![0].produk
-                                                  .harga
-                                                  .toString()),
+                                          Text(
+                                              data.listDetailPesanan!.length != 0?
+                                            data.listDetailPesanan![0].produk.harga.toString()
+                                                 : "",)
                                         ],
                                       ),
                                     ],
