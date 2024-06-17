@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version_bloc/api/apiUser.dart';
-import 'package:mobile_version_bloc/api/apiWallet.dart';
 import 'package:mobile_version_bloc/api/apiWithdraw.dart';
+import 'package:mobile_version_bloc/api/apiWallet.dart';
 import 'package:mobile_version_bloc/models/user.dart';
 import 'package:mobile_version_bloc/models/withdraw.dart';
 import 'package:mobile_version_bloc/utility/appColor.dart';
@@ -25,7 +24,7 @@ class _WalletState extends State<Wallet> {
     ApiWithdraw().getWithdrawByUser().then((value) {
       print('Withdraws fetched successfully');
       setState(() {
-        print("data withdrwa : ${value}");
+        print("data withdraw : ${value}");
         listWithdraw = value;
       });
       loading(false);
@@ -51,7 +50,7 @@ class _WalletState extends State<Wallet> {
     loading(true);
     ApiWithdraw().storeWithDraw(jumlah, namaBank, noRek).then((value) {
       print('Withdrawal initiation successful');
-      handleWallet();
+      
       setState(() {
         
       });
@@ -60,6 +59,7 @@ class _WalletState extends State<Wallet> {
       loading(false);
       print('Error initiating withdrawal: $err');
     });
+    handleWallet();
   }
 
   void loading(action) {
@@ -85,23 +85,27 @@ class _WalletState extends State<Wallet> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Withdraw'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: amountController,
-                decoration: InputDecoration(labelText: 'Amount'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: accountNumberController,
-                decoration: InputDecoration(labelText: 'Account Number'),
-              ),
-              TextField(
-                controller: bankNameController,
-                decoration: InputDecoration(labelText: 'Bank Name'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: amountController,
+                  decoration: InputDecoration(labelText: 'Amount'),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 8),
+                TextField(
+                  controller: accountNumberController,
+                  decoration: InputDecoration(labelText: 'Account Number'),
+                ),
+                SizedBox(height: 8),
+                TextField(
+                  controller: bankNameController,
+                  decoration: InputDecoration(labelText: 'Bank Name'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             ElevatedButton(
@@ -258,7 +262,7 @@ class _WalletState extends State<Wallet> {
                                   child: DataTable(
                                     columns: [
                                       DataColumn(label: Text('Id')),
-                                      DataColumn(label: Text('Jumalh')),
+                                      DataColumn(label: Text('Jumlah')),
                                       DataColumn(label: Text('Status')),
                                       DataColumn(label: Text('Tanggal')),
                                     ],

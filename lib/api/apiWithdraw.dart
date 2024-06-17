@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiWithdraw {
   String token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -24,9 +24,9 @@ class ApiWithdraw {
 
   Future<List<Withdraw>> getWithdrawByUser() async {
     token = await getToken();
-
+    var uri = Uri.parse(url + "withdraw-user");
     try {
-      var response = await http.get(Uri.http(url, '/api/withdraw-user'), headers: _setHeaders());
+      var response = await http.get(uri, headers: _setHeaders());
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
       List<dynamic> body = json.decode(response.body)['data'];
       List<Withdraw> withdraws = body.map((dynamic item) => Withdraw.fromJson(item)).toList();
@@ -38,11 +38,11 @@ class ApiWithdraw {
 
   Future<bool> storeWithDraw(int jumlah, String namaBank, String noRek) async {
     token = await getToken();
-
+    var uri = Uri.parse(url + "withdraw-user");
     try {
-      print("url ${ Uri.http(url, '/api/withdraw-user')}");
+      print("url ${ uri}");
       var response = await http.post(
-        Uri.http(url, '/api/withdraw-user'),
+        uri,
         headers: _setHeaders(),
         body: json.encode({
           'jumlah': jumlah,

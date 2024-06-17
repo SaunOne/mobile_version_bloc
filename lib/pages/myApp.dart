@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp( 
         title: 'Atma Kitchen App',
-        initialRoute: '/login',
+        initialRoute: '/start',
         routes: routes,
       ),
     );  

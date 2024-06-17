@@ -39,48 +39,25 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       if (event.search == "") {
         listTransaksi = temp;
       } else {
+        int i=0;
         for (Transaksi item in temp) {
+          
           if (item.status_transaksi
               .toLowerCase()
               .contains(event.search.toLowerCase())) {
+                
             listTransaksi.add(item);
-            break;
+            
           }
         }
       }
 
       emit(ShowHistoryData(listTransaksi));
     } catch (error) {
-      print(error);
+      print("eror $error");
     }
 
-    Future<void> _onTampilData(
-        TampilTransaksiEvent event, Emitter<HistoryState> emit) async {
-      emit(HistoryLoading());
-      try {
-        print("masuk history");
-
-        List<Transaksi> temp = event.listTransaksi;
-        List<Transaksi> listTransaksi = [];
-        print("temp : ${temp.length}");
-        if (event.search == "") {
-          listTransaksi = temp;
-        } else {
-          for (Transaksi item in temp) {
-            if (item.status_transaksi
-                .toLowerCase()
-                .contains(event.search.toLowerCase())) {
-              listTransaksi.add(item);
-              break;
-            }
-          }
-        }
-
-        emit(ShowHistoryData(listTransaksi));
-      } catch (error) {
-        print(error);
-      }
-    }
+    
   }
 
   Future<void> _onKonfirmasiPesanan(

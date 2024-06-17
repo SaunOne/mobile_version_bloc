@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiUser {
   String token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -23,9 +23,9 @@ class ApiUser {
 
   Future<User> findByAuth() async {
     token = await getToken();
-
+    var uri = Uri.parse(url + "user-profile");
     try {
-      var response = await http.get(Uri.http(url , '/api/user-profile'),
+      var response = await http.get(uri,
           headers: _setHeaders());
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
       print("user : ${response.body}");

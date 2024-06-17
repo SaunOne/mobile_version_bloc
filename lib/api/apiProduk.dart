@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiProduk {
   String token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -22,12 +22,12 @@ class ApiProduk {
   };
 
   Future<List<Produk>> fetchAll() async {
-    print('token : ${token}' );
+   
     token = await getToken();
     
     try {
-      var uri = Uri.http(url , '/api/produk');
-      
+      // var uri = Uri.http(url , '/api/produk');
+      var uri = Uri.parse(url + "produk");
       var response = await http.get(uri,
           headers: _setHeaders());
           print('url nya : ${uri}');
@@ -48,7 +48,8 @@ class ApiProduk {
     token = await getToken();
 
     try {
-      var response = await http.get(Uri.parse(url + '/api/produk/$id'),
+      var uri = Uri.parse(url + "produk/$id");
+      var response = await http.get(uri,
           headers: _setHeaders());
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
@@ -62,8 +63,9 @@ class ApiProduk {
   Future<http.Response> store(Produk produk) async {
     token = await getToken();
     try {
+      var uri = Uri.parse(url + "produk");
       var response = await http.post(
-        Uri.http(url, '/api/produk'),
+        uri,
         headers: _setHeaders(),
         body: produk.toRawJson(),
       );
@@ -75,8 +77,9 @@ class ApiProduk {
 
   Future<http.Response> update(Produk produk) async {
     try {
+      var uri = Uri.parse(url + "produk/${produk.id}");
       var response = await http.put(
-        Uri.http(url, '/api/produk/${produk.id}'),
+        uri,
         headers: _setHeaders(),
         body: produk.toRawJson(),
       );

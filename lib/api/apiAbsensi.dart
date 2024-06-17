@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiAbsensi {
   String token = '';
-  String tempToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YmQ4MDEwNC04YTBhLTRhYTQtYWY0My1lNmE4YWI4OTZhNjciLCJqdGkiOiJhYjk0OTgzMDcxMjlmMzA0ZTg4N2U3Yzk3MmM0YzJkN2FkMzBhNWU5NWIwMjVmNzNiNDZhYmZlNTE3OTMzODY0YTBlMjAzZTFlMGNhMzM5NyIsImlhdCI6MTcxNTIxMTgwNC44OTQ3NDMsIm5iZiI6MTcxNTIxMTgwNC44OTQ3NDUsImV4cCI6MTc0Njc0NzgwNC44ODcxMDUsInN1YiI6IjUzIiwic2NvcGVzIjpbXX0.NW3giXY150-2UpyvKyKOSIy4U8KjiAWbBUX3lc2yb9f_dzSp_j--iMk8s6EHD1iVjeZTK5edb2I3XYU5q9ei-Tu--7D2RoX8Mk3vPItkSt-exz0vFT0y3ICK7V-z8cX5xUNKPLNJY_oS3Ua6_49hxHjEggsCZikzU7CHiH-AQmFXUqttOiHol-ztU-RSeTbpYl-h6aGrAP8OPRtEiHlIwJ5ufSdTA5fpJcHZ5N9vPibFkuuKnhqnuA3mXi-dNImdDuY-sr4ZqgrIqj9eiMTInXF9EGd8Y7lR2jGHmINJ6aJoW_d6QrDEwT0oP8qOvvzqC2Wz2hHLkJgn8CWhX47uGWEqR9jXCxjMyMx9-rIvCZByRtug7IKrXE3wsFy6I7fECfn23vyzmOWjZlqisuIpfX4LNkdQg-_sYg2PWzzPJaIxfCj5xMhXxOD2qOM9SwMHD7-r9EZqAeVmPRyqsazkNuPxUyIHLfx3r3LCu4QQOp2Dumin4Zj32aecw9SPc8sVVdQ_HR96GcDYancpXJCB3LRTuWDFy5tLT089gdR5lHP1LiMLadtcuBhboO16pYeZFlxgpfgMh3yuyP2US80C4McvOrKYozjbaLM863Xe-Xw4TAMgb3ikggA1VZ_i729w2kx7cBNgDX2mLKADipRQ7yBEbvC8_b5w4Jv9CZrtOqE";
+ 
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -28,11 +28,13 @@ class ApiAbsensi {
   Future<List<Absensi>> fetchAll() async {
     token = await getToken();
     try {
+      var uri = Uri.parse(url + "absensi");
+      print("uri absen: ${uri}");
       var response = await http.get(
-        Uri.http(url, '/api/absensi'),
+        uri,
         headers: _setHeaders(),
       );
-
+      print("response : ${response.body}");
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
       Iterable list = json.decode(response.body)['data'];
@@ -49,6 +51,7 @@ class ApiAbsensi {
     token = await getToken();
 
     try {
+      
       var response = await http.get(Uri.parse(url + '/api/$id'),
           headers: _setHeaders());
 
@@ -66,8 +69,9 @@ class ApiAbsensi {
   Future<Response> store(int id, String tanggal) async {
     var data = {"id_user": id, "tanggal": tanggal};
     try {
+      var uri = Uri.parse(url + "absensi");
       var response = await post(
-        Uri.http(url, '/api/absensi'),
+        uri,
         headers: _setHeaders(),
         body: jsonEncode(data),
       );
@@ -85,9 +89,10 @@ class ApiAbsensi {
 
   Future<Response> update({required int id_absensi, String? tanggal}) async {
     var data = {"tanggal": tanggal};
+    var uri = Uri.parse(url + "absensi/${id_absensi}");
     try {
       var response = await put(
-        Uri.http(url, '/api/absensi/${id_absensi}'),
+        uri,
         headers: _setHeaders(),
         body: jsonEncode(data),
       );
@@ -100,13 +105,14 @@ class ApiAbsensi {
     } catch (e) {
       print("error : ${e}");
       return Future.error(e.toString());
-    }
+    }  
   }
 
   Future<Response> destroy(id) async {
     try {
+      var uri = Uri.parse(url + "absensi/${id}");
       var response = await delete(
-        Uri.http(url, '/api/absensi/${id}'),
+        uri,
         headers: _setHeaders(),
       );
       if (response.statusCode == 200) {

@@ -25,8 +25,9 @@ class ApiKaryawan {
   Future<List<Karyawan>> fetchAll() async {
     token = await getToken();
     try {
+      var uri = Uri.parse(url + "karyawan");
       var response = await http.get(
-        Uri.http(url, '/api/karyawan'),
+        uri,
         headers: _setHeaders(),
       );
 
@@ -46,7 +47,8 @@ class ApiKaryawan {
     token = await getToken();
 
     try {
-      var response = await http.get(Uri.parse(url + '/api/pegawai/$id'),
+      var uri = Uri.parse(url + "pegawai/$id");
+      var response = await http.get(uri,
           headers: _setHeaders());
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
@@ -59,8 +61,9 @@ class ApiKaryawan {
 
   Future<http.Response> store(Karyawan karyawan) async {
     try {
+      var uri = Uri.parse(url + "pegawai");
       var response = await http.post(
-        Uri.http(url, '/api/pegawai'),
+        uri,
         headers: _setHeaders(),
         body: karyawan.toRawJson(),
       );
@@ -72,8 +75,9 @@ class ApiKaryawan {
 
   Future<http.Response> update(Karyawan karyawan) async {
     try {
+      var uri = Uri.parse(url + "pegawai/${karyawan.id}");
       var response = await http.put(
-        Uri.http(url, '/api/pegawai/${karyawan.id}'),
+        uri,
         headers: _setHeaders(),
         body: karyawan.toRawJson(),
       );

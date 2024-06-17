@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:mobile_version_bloc/models/limitOrder.dart';
 import 'package:mobile_version_bloc/models/readyStok.dart';
 
 
 class Produk {
   int id;
   ReadyStok? readyStok;
+  LimitOrder? limitOrder;
   String nama_produk;
   double harga; // Changed from 'float' to 'double' because Dart uses 'double'
   double quantity; // Changed from 'float' to 'double'
@@ -16,6 +18,7 @@ class Produk {
   Produk({
     required this.id,
     this.readyStok,
+    this.limitOrder,
     required this.nama_produk,
     required this.harga,
     required this.quantity,
@@ -35,6 +38,7 @@ class Produk {
       deskripsi: json['deskripsi'] ?? '',
       image_produk: json['image_produk'] ?? '',
       jenis_produk: json['jenis_produk'] ?? '',
+      limitOrder: LimitOrder.fromJson(json) ?? null
     );
   }
 

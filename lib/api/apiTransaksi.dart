@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiTransaksi {
   String token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -23,9 +23,9 @@ class ApiTransaksi {
 
   Future<Transaksi> findById(int id) async {
     token = await getToken();
-
+    var uri = Uri.parse(url + "transaksi/${id}");
     try {
-      var response = await http.get(Uri.http(url , '/transaksi/$id'),
+      var response = await http.get(uri,
           headers: _setHeaders());
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
@@ -38,9 +38,9 @@ class ApiTransaksi {
 
   Future<List<Transaksi>> findByUser() async {
     token = await getToken();
-
+    
     try {
-      var uri = Uri.http(url , '/api/transaksi');
+      var uri = Uri.parse(url + "transaksi");
       
       var response = await http.get(uri,
           headers: _setHeaders());
@@ -60,9 +60,10 @@ class ApiTransaksi {
 
   Future<http.Response> store(Transaksi transaksi) async {
     token = await getToken();
+    var uri = Uri.parse(url + "transaksi");
     try {
       var response = await http.post(
-        Uri.http(url, '/api/transaksi'),
+        uri,
         headers: _setHeaders(),
         body: transaksi.toRawJson(),
       );
@@ -75,8 +76,9 @@ class ApiTransaksi {
   Future<http.Response> update(Transaksi transaksi) async {
     token = await getToken();
     try {
+      var uri = Uri.parse(url + "transaksi/${transaksi.id}");
       var response = await http.put(
-        Uri.http(url, '/api/transaksi/${transaksi.id}'),
+        uri,
         headers: _setHeaders(),
         body: transaksi.toRawJson(),
       );
@@ -88,9 +90,10 @@ class ApiTransaksi {
 
   Future<http.Response> destroy(int id) async {
     token = await getToken();
+    var uri = Uri.parse(url + "transaksi/$id");
     try {
       var response = await http.delete(
-        Uri.http(url, '/api/transaksi/$id'),
+        uri,
         headers: _setHeaders(),
       );
       return response;
@@ -101,14 +104,15 @@ class ApiTransaksi {
 
   Future<http.Response> konfirmasi(int id) async {
     token = await getToken();
-    
+    var uri = Uri.parse(url + "konfirmasi-customer/$id");
+    print("uri konfrimasi : ${uri}");
     try {
       print("id = $id");
       var response = await http.post(
-        Uri.http(url, '/api/konfirmasi-customer/$id'),
+        uri,
         headers: _setHeaders(),
       );
-      print("response ${response}");
+      print("response ${response.body}");
       return response;
     } catch (e) {
       return Future.error(e.toString());  

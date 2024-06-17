@@ -1,38 +1,35 @@
-import 'package:appbar_animated/appbar_animated.dart';
-import 'package:flutter/material.dart';
-import 'package:mobile_version_bloc/api/apiUser.dart';
-import 'package:mobile_version_bloc/models/user.dart';
-import 'package:mobile_version_bloc/pages/user-pages/view/content/home.dart';
-import 'package:mobile_version_bloc/pages/user-pages/view/content/listProduk.dart';
-import 'package:mobile_version_bloc/utility/appColor.dart';
-import 'package:motion_tab_bar/MotionTabBar.dart';
-import 'package:motion_tab_bar/MotionTabBarController.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LayoutUser extends StatefulWidget {
-  const LayoutUser({super.key});
+
+import 'package:flutter/material.dart';
+import 'package:mobile_version_bloc/pages/guest-pages/content/home.dart';
+import 'package:mobile_version_bloc/utility/appColor.dart';
+import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
+import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
+import 'package:appbar_animated/appbar_animated.dart';
+
+import '../user-pages/view/content/listProduk.dart';
+
+class LayoutGuest extends StatefulWidget {
+  const LayoutGuest({super.key});
 
   @override
-  State<LayoutUser> createState() => _LayoutUserState();
+  State<LayoutGuest> createState() => _LayoutGuestState();
 }
 
-class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
+class _LayoutGuestState extends State<LayoutGuest> with TickerProviderStateMixin {
   MotionTabBarController? _motionTabBarController;
   bool isSideMenu = false;
-  bool isLoading = true;
-  User? user;
   
 
   Widget? activeContent;
   List<Widget> listContent = [
     Home(),
-    ListProduk(), 
+    ListProduk(),
   ];
 
   
 
   void initState() {
-    handleProfile();
     super.initState();
 
     // // Use normal tab controller
@@ -48,26 +45,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
       length: 2,
       vsync: this,
     );
-    activeContent = Home();
-  }
-
-  void handleProfile(){
-    loading(true);
-    ApiUser().findByAuth().then((value) {
-      print("profile $value");
-      user = value;
-      loading(false);
-    }).catchError((err){
-      loading(false);
-      print("error ${err}");
-    });
-  }
-
-  void loading(action) {
-    
-    setState(() {
-      isLoading = action;
-    });
+    activeContent = const Home();
   }
 
   @override
@@ -80,6 +58,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: ScaffoldLayoutBuilder(
@@ -105,7 +84,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-            if (isSideMenu) Positioned(top: 100, right: 20, child: sideBar(context))
+            if (isSideMenu) Positioned(top: 100, right: 20, child: sideBar())
           ],
         ),
       ),
@@ -173,10 +152,8 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
     );
   }
 
-  Widget sideBar(BuildContext context) {
-    return  
-    isLoading? Container() : 
-    Container(
+  Widget sideBar() {
+    return Container(
       height: 400,
       width: 280,
       decoration: BoxDecoration(
@@ -207,14 +184,14 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${user!.username}",
+                          "Guest",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "${user!.email}",
+                          "Guest",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -236,56 +213,7 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                 ),
                 Column(
                   children: [
-                    MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/profile');
-                      },
-                      padding: EdgeInsets.zero,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.person,
-                            size: 25,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Profile",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 82, 73, 68),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/user/history');
-                      },
-                      padding: EdgeInsets.zero,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.history,
-                            size: 25,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "History",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 82, 73, 68),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    
                   ],
                 ),
               ],
@@ -303,14 +231,14 @@ class _LayoutUserState extends State<LayoutUser> with TickerProviderStateMixin {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.logout,
+                        Icons.login,
                         size: 25,
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Text(
-                        "Logout",
+                        "Login",
                         style: TextStyle(
                           color: Color.fromARGB(255, 82, 73, 68),
                           fontSize: 16,

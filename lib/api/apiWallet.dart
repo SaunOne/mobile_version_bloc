@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiWallet {
   String token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -25,7 +25,8 @@ class ApiWallet {
     token = await getToken();
 
     try {
-      var response = await http.get(Uri.http(url , '/api/wallet-user'),
+      var uri = Uri.parse(url + "wallet-user");
+      var response = await http.get(uri,
           headers: _setHeaders());
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
       double wallet = (json.decode(response.body)['data']['jumlah_saldo']).toDouble();

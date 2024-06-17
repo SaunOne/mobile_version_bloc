@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiLaporan {
   // Replace with your actual API endpoint
-  static final String url = networkURL.prefix ;
+  static final String url = networkURL.prefix + networkURL.endpoint;
   String token = "";
 
   Future<String> getToken() async {
@@ -26,12 +26,14 @@ class ApiLaporan {
   };
 
   Future<DataStok> getDataStok() async {
-    
+    print("masuk");
     token = await getToken();
     try {
-      print(url);
+      
+      var uri = Uri.parse(url + "laporan-stok-bahan");
+      print("uri $uri");
       var response = await http.get(
-        Uri.http(url, '/api/laporan-stok-bahan'),
+        uri,
         headers: _setHeaders(),
       );
       print(response.body);
@@ -52,12 +54,13 @@ class ApiLaporan {
       "start_date" : start,
       "end_date" : end
     };
-
+    print("isi : $start : $end");
     token = await getToken();
     try {
       print(url);
+      var uri = Uri.parse(url + "laporan-pemakaian-bahan");
       var response = await http.post(
-        Uri.http(url, '/api/laporan-pemakaian-bahan'),
+        uri,
         headers: _setHeaders(),
         body: jsonEncode(dataPost) ,
         
@@ -83,11 +86,9 @@ class ApiLaporan {
     // String formattedDate = DateFormat('yyyy-MM').format(parsedDate);
     try {
 
-      
-      print( Uri.http(url, '/api/laporan-pengeluaran-pemasukkan/${date}'));
+      var uri = Uri.parse(url + "laporan-pengeluaran-pemasukkan/${date}");
       var response = await http.get(
-        Uri.http(url, '/api/laporan-pengeluaran-pemasukkan/${date}'),
-        
+        uri,
         headers: _setHeaders(),
       );
       print(response.body);

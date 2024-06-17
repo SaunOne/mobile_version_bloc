@@ -32,8 +32,10 @@ class _LaporanPengunaanBahanBakuState
 
   void loadLaporan(LaporanPemakaianBloc laporan, DateTimeRange range) {
     print("masuk");
-    laporan.add(GetLaporanPemakaianBahanBakuEvent(
-        range.start.toString(), range.end.toString()));
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    final String startDate = dateFormat.format(range.start);
+    final String endDate = dateFormat.format(range.end);
+    laporan.add(GetLaporanPemakaianBahanBakuEvent(startDate, endDate));
   }
 
   void handleLoading() {

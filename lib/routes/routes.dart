@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version_bloc/pages/auth-pages/view/login.dart';
 import 'package:mobile_version_bloc/pages/mo-pages/view/layout-mo.dart';
+import 'package:mobile_version_bloc/pages/splashLogin.dart';
 import 'package:mobile_version_bloc/pages/test.dart';
 import 'package:mobile_version_bloc/pages/user-pages/view/content/detail-profile.dart';
 import 'package:mobile_version_bloc/pages/user-pages/view/content/history.dart';
@@ -14,7 +15,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/test': (context) => Test(),
 
   //guest-pages
-
+  '/start': (context) => SplashLogin(),
   //admin-pages
 
   //user-pages
@@ -23,6 +24,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/user/wallet': (context) => Wallet(),
   '/profile': (context) => Profile(),
   '/detail-profile': (context) => DetailProfile(),
+  
   //mo-pages
   '/mo': (context) => LayoutMO(),
 

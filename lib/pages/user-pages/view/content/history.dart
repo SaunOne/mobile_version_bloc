@@ -185,7 +185,7 @@ class _HistoryState extends State<History> {
           );
         } else if (state is HistoryData) {
           listAllTransaksi = state.listTransaksi;
-          
+
           listTransaksi = listAllTransaksi;
         } else if (state is ShowHistoryData) {
           listTransaksi = state.listTransaksi;
@@ -198,7 +198,8 @@ class _HistoryState extends State<History> {
             ),
             ...listTransaksi.map(
               (data) {
-                print("list detail pesanan : ${data.listDetailPesanan!.length}");
+                print(
+                    "list detail pesanan : ${data.listDetailPesanan!.length}");
                 return Container(
                   margin: EdgeInsets.only(bottom: 20),
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -299,15 +300,20 @@ class _HistoryState extends State<History> {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Text(
-                                            data.listDetailPesanan!.length != 0?
-                                            data.listDetailPesanan![0].produk
-                                                .nama_produk : "",
+                                            data.listDetailPesanan!.length != 0
+                                                ? data.listDetailPesanan![0]
+                                                    .produk.nama_produk
+                                                : "",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),
-                                          Text(data.listDetailPesanan!.length != 0?
-                                            data.listDetailPesanan![0].jumlah.toString()
-                                                 : "",),
+                                          Text(
+                                            data.listDetailPesanan!.length != 0
+                                                ? data.listDetailPesanan![0]
+                                                    .jumlah
+                                                    .toString()
+                                                : "",
+                                          ),
                                         ],
                                       ),
                                       Row(
@@ -315,9 +321,12 @@ class _HistoryState extends State<History> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                              data.listDetailPesanan!.length != 0?
-                                            data.listDetailPesanan![0].produk.harga.toString()
-                                                 : "",)
+                                            data.listDetailPesanan!.length != 0
+                                                ? data.listDetailPesanan![0]
+                                                    .produk.harga
+                                                    .toString()
+                                                : "",
+                                          )
                                         ],
                                       ),
                                     ],
@@ -338,9 +347,7 @@ class _HistoryState extends State<History> {
                                       context, historyBloc, data.id);
                                 },
                                 child:
-                                    (data.status_transaksi == "dikirim kurir" ||
-                                            data.status_transaksi ==
-                                                "sudah di-pickup")
+                                    (data.status_transaksi == "sudah di-pickup")
                                         ? Container(
                                             // margin: EdgeInsets.only(top: 5),
                                             width: 100,
@@ -385,11 +392,11 @@ class _HistoryState extends State<History> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildNavItem("Semua", 0, historyBloc),
+          _buildNavItem("semua", 0, historyBloc),
           SizedBox(width: 10),
-          _buildNavItem("Diterima", 1, historyBloc),
+          _buildNavItem("diterima", 1, historyBloc),
           SizedBox(width: 10),
-          _buildNavItem("Proses", 2, historyBloc),
+          _buildNavItem("diproses", 2, historyBloc),
           SizedBox(width: 10),
           _buildNavItem("sudah di-pickup", 3, historyBloc),
           SizedBox(width: 10),
@@ -397,7 +404,7 @@ class _HistoryState extends State<History> {
           SizedBox(width: 10),
           _buildNavItem("selesai", 5, historyBloc),
           SizedBox(width: 10),
-          _buildNavItem("Ditolak", 6, historyBloc),
+          _buildNavItem("ditolak", 6, historyBloc),
         ],
       ),
     );

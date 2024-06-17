@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Authentication {
   var token = '';
 
-  static final String url = networkURL.prefix;
+  static final String url = networkURL.prefix + networkURL.endpoint;
 
   getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -27,7 +27,9 @@ class Authentication {
       'email': email,
       'password': password,
     };
-    var uri = Uri.http(url, '/api/login/');
+    print("url sebelum " + url);
+    var uri = Uri.parse(url + "login");
+    print("uri : ${uri}" );
 
     var response = await post(uri, body: jsonEncode(data), headers: _setHeaders());
 
@@ -90,7 +92,8 @@ class Authentication {
     var data = {"email": email};
 
     try {
-      var uri = Uri.http(networkURL.prefix, '/api/forgot-password');
+      // var uri = Uri.http(networkURL.prefix, '/api/forgot-password');
+      var uri = Uri.parse(url + "forgot-password");
       var response =
           await post(uri, body: jsonEncode(data), headers: _setHeaders());
       if (jsonDecode(response.body)['status-code'] == 200) {
@@ -112,7 +115,7 @@ class Authentication {
     var data = {"email": email, "token": token, "password": password};
 
     try {
-      var uri = Uri.http(networkURL.prefix, '/api/reset-password');
+      var uri = Uri.parse(url + "api/reset-password");
       var response =
           await post(uri, body: jsonEncode(data), headers: _setHeaders());
 
@@ -133,7 +136,8 @@ class Authentication {
 
   Future<bool> cekActive(int id) async {
     try {
-      var uri = Uri.http(url, '/cek-active/$id');
+     
+      var uri = Uri.parse(url + "login/${id}");
       var response = await get(uri);
 
       if (response.statusCode == 200) {

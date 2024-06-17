@@ -1,5 +1,9 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_version_bloc/api/apiUser.dart';
+import 'package:mobile_version_bloc/models/user.dart';
+import 'package:mobile_version_bloc/pages/mo-pages/view/content/home.dart';
+import 'package:mobile_version_bloc/pages/mo-pages/view/content/karyawan.dart';
 import 'package:mobile_version_bloc/pages/mo-pages/view/content/laporan.dart';
 import 'package:mobile_version_bloc/utility/appColor.dart';
 import 'package:motion_tab_bar_v2/motion-badge.widget.dart';
@@ -17,11 +21,13 @@ class LayoutMO extends StatefulWidget {
 class _LayoutMOState extends State<LayoutMO> with TickerProviderStateMixin {
   MotionTabBarController? _motionTabBarController;
   bool isSideMenu = false;
+  bool isLoading = true;
+  User? user;
 
   Widget? activeContent;
   List<Widget> listContent = [
-    Container(),
-    Container(),
+    Home(),
+    karyawan(),
     Laporan(),
   ];
 
@@ -42,6 +48,25 @@ class _LayoutMOState extends State<LayoutMO> with TickerProviderStateMixin {
       vsync: this,
     );
     activeContent =  Container();
+  }
+
+  void handleProfile(){
+    loading(true);
+    ApiUser().findByAuth().then((value) {
+      print(value);
+      user = value;
+      loading(false);
+    }).catchError((err){
+      loading(false);
+      print("error ${err}");
+    });
+  }
+
+  void loading(action) {
+    setState(() {
+      handleProfile();
+      isLoading = action;
+    });
   }
 
   @override
@@ -181,14 +206,14 @@ class _LayoutMOState extends State<LayoutMO> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Pandu Prayaksa",
+                          "${user!.username}",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "tinartianr720@gmail.com",
+                          "${user!.email}",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
