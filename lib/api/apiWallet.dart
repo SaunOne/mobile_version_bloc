@@ -25,10 +25,13 @@ class ApiWallet {
     token = await getToken();
 
     try {
+      
       var uri = Uri.parse(url + "wallet-user");
+      print("uri wallet : $uri");
       var response = await http.get(uri,
           headers: _setHeaders());
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+      print("response : ${response.body}");
       double wallet = (json.decode(response.body)['data']['jumlah_saldo']).toDouble();
       print("wallet : ${wallet}");
       return wallet;

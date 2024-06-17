@@ -6,6 +6,8 @@ import 'package:mobile_version_bloc/models/transaksi.dart';
 class User {
   int id;
   String username, password, nama_lengkap, gender, tanggal_lahir,email,no_telp;
+  double? jumlahSaldo = 0;
+  int? point = 0;
   Role? role;
   List<Transaksi>? transaksi = [];
   
@@ -18,6 +20,8 @@ class User {
     required this.gender,
     required this.tanggal_lahir,
     required this.no_telp,
+    this.jumlahSaldo,
+    this.point,
     this.transaksi,
     Role? this.role,
   });
@@ -43,6 +47,8 @@ class User {
       id : json["id_user"] ?? 0,
       username : json["username"] ?? '',
       password : json["password"] ?? '',
+      jumlahSaldo: (json["jumlah_saldo"] ?? 0).toDouble(),
+      point: json["point"] ?? 0,
       nama_lengkap: json["nama_lengkap"] ?? '' ,
       no_telp : json["no_telp"] ?? '',
       gender : json["gender"] ?? '',

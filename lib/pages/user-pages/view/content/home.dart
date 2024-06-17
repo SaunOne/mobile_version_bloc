@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_version_bloc/api/apiUser.dart';
 import 'package:mobile_version_bloc/models/produk.dart';
 import 'package:mobile_version_bloc/models/user.dart';
 import 'package:mobile_version_bloc/pages/auth-pages/bloc/login_bloc/login_bloc.dart';
@@ -23,6 +24,25 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     handleLoadData();
+    handleProfile();
+  }
+
+  void handleProfile() {
+    loading(true);
+    ApiUser().findByAuth().then((value) {
+      print("profile $value");
+      user = value;
+      loading(false);
+    }).catchError((err) {
+      loading(false);
+      print("error ${err}");
+    });
+  }
+
+  void loading(action) {
+    setState(() {
+      isLoading = action;
+    });
   }
 
   void handleLoadData() {
@@ -136,90 +156,96 @@ class _HomeState extends State<Home> {
                           if (state is LoginLoading) {
                             return Center(child: CircularProgressIndicator());
                           } else if (state is LoginSuccess) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Atma Wallet",
-                                    style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.wallet,
-                                        color: AppColors.primaryColor,
-                                        size: 40,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${100000} Atma Wallet",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: AppColors.primaryColor,
-                                        size: 40,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${100} Points",
-                                        style: TextStyle(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  MaterialButton(
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () {
-                                      
-                                    },
-                                    child: Container(
-                                      height: 35,
-                                      width: 200,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "History Withdraw",
+                            return isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Atma Wallet",
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
+                                              color: AppColors.primaryColor,
+                                              fontSize: 22,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.wallet,
+                                              color: AppColors.primaryColor,
+                                              size: 40,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${user!.jumlahSaldo!} Atma Wallet",
+                                              style: TextStyle(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              color: AppColors.primaryColor,
+                                              size: 40,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "${user!.point!} Points",
+                                              style: TextStyle(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        MaterialButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {},
+                                          child: Container(
+                                            height: 35,
+                                            width: 200,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "History Withdraw",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
+                                  );
                           }
                           return Container(); // Tambahkan return container kosong untuk menghindari error
                         },
